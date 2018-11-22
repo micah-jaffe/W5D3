@@ -1,11 +1,21 @@
+require 'byebug'
 class Route
   attr_reader :pattern, :http_method, :controller_class, :action_name
 
   def initialize(pattern, http_method, controller_class, action_name)
+    @pattern = pattern
+    @http_method = http_method
+    @controller_class = controller_class
+    @action_name = action_name
   end
 
   # checks if pattern matches path and method matches request method
   def matches?(req)
+    req_method = req.request_method
+    http_method = @http_method.to_s.upcase
+    req_path = req.path
+    
+    req_method == http_method && req_path =~ @pattern
   end
 
   # use pattern to pull out route params (save for later?)
